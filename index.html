@@ -3,88 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mining X - BTC Simulator</title>
+    <title>Mining X - BTC Miner Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/assets/css/v-style.css">
 </head>
 <body class="bg-[#0d1117] text-white p-6 min-h-screen flex flex-col items-center">
 
-    <div id="lockOverlay" class="fixed inset-0 bg-black z-[100] hidden flex flex-col items-center justify-center text-center">
-        <h1 class="text-3xl font-bold text-red-500 uppercase">System Lock</h1>
-    </div>
-
     <div id="lockScreen" class="w-full max-w-md flex flex-col items-center justify-center min-h-screen">
+        <h1 class="text-2xl font-bold mb-8 text-center uppercase">Welcome to Mining X</h1>
         <div class="bg-[#1e2530] p-8 rounded-lg shadow-2xl w-full border border-[#1f6feb]">
-            <h1 class="text-2xl font-bold mb-8 text-center uppercase tracking-widest">License Required</h1>
+            <h3 class="text-xl font-bold mb-4 text-center">LICENSE REQUIRED</h3>
             <div id="lockMessage" class="text-center text-sm mb-4 text-red-500 hidden"></div>
-            <input type="text" id="licenseKeyInput" placeholder="ENTER 20-CHAR KEY" class="w-full p-3 rounded bg-gray-700 mb-4 font-mono uppercase tracking-widest text-yellow-500 border border-gray-600" maxlength="20">
-            <button id="enterKeyBtn" class="w-full bg-[#1f6feb] py-3 rounded-lg font-bold mb-4 hover:bg-blue-700">Activate and Enter</button>
-            <button id="buyNowBtn" class="w-full bg-[#26a69a] py-3 rounded-lg font-bold hover:bg-teal-600">View Pricing & Buy</button>
-            <div class="flex justify-between mt-6 px-2 text-xs">
-                <a href="#" id="referralLink" class="text-yellow-500 underline uppercase">Referral Program</a>
-                <a href="https://t.me/MiningXowner" target="_blank" class="text-blue-400 underline uppercase">Support</a>
+            <input type="text" id="licenseKeyInput" placeholder="20-CHARACTER KEY" class="w-full p-3 rounded bg-gray-700 border border-gray-600 mb-4 font-mono uppercase tracking-widest text-yellow-500" maxlength="20">
+            <button id="enterKeyBtn" class="w-full bg-[#1f6feb] py-3 rounded-lg font-bold mb-4 hover:bg-blue-700 transition">Activate and Enter</button>
+            <button id="buyNowBtn" class="w-full bg-[#26a69a] py-3 rounded-lg font-bold hover:bg-teal-600 mb-4 transition">View Pricing & Buy License</button>
+            <div class="flex justify-center space-x-4 text-sm font-semibold uppercase">
+                <a href="https://t.me/MiningXowner" target="_blank" class="text-blue-400 underline">support</a>
+                <a href="#" id="referralLink" class="text-yellow-500 underline">referral</a>
             </div>
         </div>
     </div>
 
-    <div id="paymentPage" class="w-full max-w-md hidden pt-10">
+    <div id="paymentPage" class="w-full max-w-md hidden pt-6 pb-12">
+        <button id="backFromPayment" class="mb-6 text-[#1f6feb] flex items-center font-bold">← BACK</button>
         <div class="bg-[#161b22] p-6 rounded-xl border-t-4 border-[#26a69a] shadow-2xl">
-            <h2 class="text-2xl font-bold text-center mb-6 text-[#26a69a]">SELECT PACKAGE</h2>
-            <div class="flex gap-2 mb-6" id="pkgContainer"></div>
-            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-500 mb-6">
-                <p class="text-xs text-gray-400">USDT (BEP20) Address:</p>
-                <input type="text" readonly id="walletAddr" class="w-full bg-transparent text-yellow-500 font-mono text-[10px] mt-1 outline-none">
-                <button id="copyBtn" class="text-xs text-blue-400 mt-2 uppercase font-bold">Copy Address</button>
+            <h2 class="text-2xl font-bold text-center mb-6 text-[#26a69a] uppercase">SELECT PACKAGE</h2>
+            <div class="flex gap-2 mb-6" id="packageContainer"></div>
+            <p class="text-center text-xl font-bold mb-6">Due: <span id="currentPriceDisplay" class="text-yellow-500">$260.00</span></p>
+            <div class="p-4 bg-gray-800 rounded-lg border-l-4 border-yellow-500 mb-6 space-y-2">
+                <p class="text-xs text-gray-400 uppercase font-bold">USDT (BEP20) Address:</p>
+                <input type="text" readonly id="walletDisplay" class="w-full bg-transparent text-yellow-500 font-mono text-[11px] outline-none">
+                <button id="copyAddressBtn" class="text-[10px] bg-blue-600 px-2 py-1 rounded uppercase font-bold">Copy Address</button>
             </div>
-            <input type="email" id="payerEmail" placeholder="Your Email Address" class="w-full p-3 rounded bg-gray-700 border border-gray-600 mb-4">
-            <label class="block text-xs text-gray-400 mb-2 uppercase">Upload Payment Proof:</label>
-            <input type="file" id="screenshot" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-6">
-            <button id="submitPay" class="w-full bg-[#26a69a] py-3 rounded font-bold uppercase">Submit Payment Request</button>
-            <button id="backLogin" class="w-full text-center text-xs mt-4 text-gray-500">Back to Login</button>
+            <input type="email" id="payerEmail" placeholder="Your Email Address" class="w-full p-3 rounded bg-gray-700 border border-gray-600 mb-4 outline-none">
+            <label class="block text-xs text-gray-400 mb-2 font-bold uppercase">Transaction Screenshot:</label>
+            <input type="file" id="screenshotInput" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-gray-700 file:text-white mb-6">
+            <button id="paymentMadeBtn" class="w-full bg-[#26a69a] py-3 rounded font-bold uppercase tracking-widest">Submit Request</button>
         </div>
     </div>
 
-    <div id="referralPage" class="w-full max-w-md hidden pt-10 text-center">
-        <div class="bg-[#161b22] p-8 rounded-xl border-t-4 border-yellow-500">
-            <h2 class="text-2xl font-bold text-yellow-500 mb-4">10% COMMISSION</h2>
-            <p class="text-gray-400 text-sm mb-6">Earn from every friend who buys a license.</p>
-            <a href="https://t.me/MiningXowner" class="bg-red-600 px-6 py-3 rounded-lg font-bold block uppercase">Get Referral Code</a>
-            <button id="backLoginRef" class="block w-full mt-6 text-xs text-gray-500 uppercase">Back</button>
+    <div id="referralPage" class="w-full max-w-md hidden pt-12">
+        <div class="bg-[#161b22] p-8 rounded-xl border-t-4 border-yellow-500 text-center">
+            <h2 class="text-3xl font-bold text-yellow-500 mb-4 uppercase">10% Commission</h2>
+            <p class="text-gray-400 text-sm mb-8 leading-relaxed">Earn from every referral purchase. Payouts via BTC monthly.</p>
+            <a href="https://t.me/MiningXowner" target="_blank" class="bg-red-600 px-8 py-3 rounded-lg font-bold inline-block uppercase shadow-lg">Contact for Code</a>
+            <button id="backFromRef" class="block w-full mt-8 text-xs text-gray-500 font-bold uppercase">Back to Login</button>
         </div>
     </div>
 
     <div id="mainContent" class="max-w-md w-full hidden">
-        <div class="mb-6 text-center">
-            <h1 class="text-3xl font-bold text-white tracking-widest uppercase">Mining X</h1>
-            <p class="text-[10px] text-gray-500 font-mono">SYSTEM_VERSION_2.0</p>
+        <div class="mb-4 text-center">
+            <div class="font-code text-yellow-500 text-2xl leading-none">
+                <pre>
+88""Yb 888888 dP""b8 
+88__dP   88  dP   `" 
+88""Yb   88  Yb      
+88oodP   88   YboodP
+                </pre>
+            </div>
+            <p class="text-gray-500 text-[10px] text-right mt-1 font-mono">v2.00</p>
+            <div class="border-t-2 border-[#1f6feb] my-2"></div>
+            <h1 class="text-2xl font-bold uppercase">Mining X</h1>
         </div>
-        <div class="bg-[#161b22] border border-[#1f6feb] p-6 rounded-lg shadow-xl mb-4 status-pulse">
-            <p class="text-cyan-400 font-mono text-lg">Balance: <span id="balance">0.00000000</span> BTC</p>
-            <p class="text-yellow-500 font-mono text-sm">BTC Price: $<span id="btc_price">0.00</span></p>
-            <p class="text-green-400 font-mono text-sm">USD Value: $<span id="usd_val">0.00</span></p>
-            <div class="border-t border-gray-700 my-4"></div>
-            <p class="text-[10px] text-red-400 uppercase">Expires: <span id="exp_date">---</span></p>
+
+        <div class="bg-[#161b22] border border-[#1f6feb] p-5 rounded-lg shadow-xl status-pulse mb-6">
+            <p class="text-cyan-400 font-mono text-lg font-bold">Balance: <span id="balance">0.00000000</span> BTC</p>
+            <p class="text-yellow-500 font-mono text-sm">Live Price: $<span id="btc_price">0.00</span></p>
+            <p class="text-green-500 font-mono text-sm">USD Value: $<span id="usd_value">0.00</span></p>
+            <p class="text-[10px] text-gray-500 mt-4 uppercase">License Exp: <span id="exp_display" class="text-red-400">---</span></p>
         </div>
-        <div class="flex gap-4">
-            <button id="startMiningBtn" class="flex-1 bg-green-600 py-3 rounded-lg font-bold">START</button>
+
+        <div class="flex gap-4 mb-4">
+            <button id="startMiningBtn" class="flex-1 bg-green-600 py-3 rounded-lg font-bold shadow-lg">START</button>
             <button id="stopMiningBtn" class="flex-1 bg-gray-500 py-3 rounded-lg font-bold opacity-50" disabled>STOP</button>
         </div>
-        <button id="withdrawBtn" class="w-full bg-red-600 py-3 rounded-lg font-bold mt-4 shadow-lg">WITHDRAW</button>
-        
-        <div id="withdrawalForm" class="hidden bg-gray-900 border border-red-500 p-4 rounded-lg mt-4">
-            <input type="text" id="wAddr" placeholder="BTC WALLET ADDRESS" class="w-full p-2 bg-black rounded text-xs mb-2 border border-gray-700 font-mono">
-            <input type="number" id="wAmt" placeholder="AMOUNT BTC" class="w-full p-2 bg-black rounded text-xs mb-2 border border-gray-700">
-            <p class="text-[10px] text-gray-500 mb-2">MIN WITHDRAW: $100.00</p>
-            <button id="confirmW" class="w-full bg-red-600 py-2 rounded text-sm font-bold">CONFIRM WITHDRAWAL</button>
+        <button id="withdrawBtn" class="w-full bg-red-600 py-3 rounded-lg font-bold mb-6">WITHDRAW</button>
+
+        <div id="withdrawalForm" class="hidden bg-gray-900 border border-red-500 p-5 rounded-lg mb-6">
+            <h3 class="font-bold text-yellow-500 mb-4 uppercase">Withdraw BTC</h3>
+            <input type="text" id="wAddress" placeholder="BTC Wallet Address" class="w-full p-2 bg-black rounded text-xs mb-3 border border-gray-700 outline-none">
+            <input type="number" id="wAmount" placeholder="Amount BTC" class="w-full p-2 bg-black rounded text-xs mb-3 border border-gray-700 outline-none">
+            <div class="text-[10px] text-gray-400 mb-4">
+                <p>Fee: 0.00000050 BTC</p>
+                <p id="minInfo" class="text-red-400"></p>
+            </div>
+            <button id="submitW" class="w-full bg-red-600 py-2 rounded text-sm font-bold uppercase">Confirm Withdrawal</button>
         </div>
 
-        <div id="console" class="bg-black p-3 h-40 overflow-y-auto rounded-lg mt-6 font-mono text-[10px] text-green-500 border border-gray-800"></div>
+        <div id="console" class="bg-black p-3 h-40 overflow-y-auto rounded-lg font-mono text-[10px] text-green-500 border border-gray-800"></div>
     </div>
 
-    <div id="msgModal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-[200]">
-        <div class="bg-gray-900 p-6 rounded border border-yellow-500 max-w-xs w-full text-center">
-            <p id="modalTxt" class="text-sm mb-4"></p>
-            <button onclick="document.getElementById('msgModal').classList.add('hidden')" class="bg-yellow-500 text-black px-6 py-1 rounded font-bold">OK</button>
+    <div id="modalOverlay" class="fixed inset-0 bg-black/90 hidden z-[200] flex items-center justify-center p-6 text-center">
+        <div class="bg-gray-900 p-6 rounded border-t-4 border-yellow-500 max-w-xs w-full">
+            <h4 id="modalTitle" class="font-bold text-yellow-500 mb-2 uppercase">Message</h4>
+            <p id="modalMsg" class="text-sm text-gray-300 mb-6"></p>
+            <button id="modalClose" class="bg-[#1f6feb] px-8 py-2 rounded font-bold uppercase text-xs">OK</button>
         </div>
     </div>
 
