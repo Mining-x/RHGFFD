@@ -1,0 +1,9 @@
+@keyframes pulse {
+    0%, 100% { border-color: #1f6feb; box-shadow: 0 0 5px #1f6feb; }
+    50% { border-color: #3b82f6; box-shadow: 0 0 15px #3b82f6; }
+}
+.status-pulse { animation: pulse 3s infinite; }
+.font-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+pre { display: inline-block; text-align: left; }
+body { overflow-x: hidden; }
+#console::-webkit-scrollbar { display: none; }
